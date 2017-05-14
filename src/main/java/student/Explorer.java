@@ -4,7 +4,9 @@ import game.EscapeState;
 import game.ExplorationState;
 import game.NodeStatus;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.PriorityQueue;
+import java.util.Stack;
 
 public class Explorer {
 
@@ -39,29 +41,26 @@ public class Explorer {
    * @param state the information available at the current state
    */
   public void explore(ExplorationState state) {
-    HashSet<Long> visited = new HashSet<>();
+    Stack<Long> path = new Stack<>();
     int currentDistance;
     Collection<NodeStatus> myNeighbours = state.getNeighbours();
-    Stack<NodeStatus> currentNeighbours = new Stack<>();
+    PriorityQueue<NodeStatus> currentNeighbours = new PriorityQueue<>();
     currentNeighbours.addAll(myNeighbours);
     while (!currentNeighbours.isEmpty()) {
       currentDistance = state.getDistanceToTarget();
       if (currentDistance == 0) {
         break;
       }
-      visited.add(state.getCurrentLocation());
+      path.add(state.getCurrentLocation());
       myNeighbours = state.getNeighbours();
-      if (myNeighbours instanceof ArrayList) {
-        Collections.reverse((ArrayList) myNeighbours);
-
+      currentNeighbours.addAll(myNeighbours);
+      NodeStatus nextLocation = currentNeighbours.remove();
+      while (path.contains(nextLocation)){
+        nextLocation = currentNeighbours.remove();
       }
-      for (NodeStatus n : myNeighbours) {
-//        if (!visited.contains(n)){
-//          currentNeighbours.push(n);
-//        }
-        currentNeighbours.addAll(myNeighbours);
+      while (!myNeighbours.contains(nextLocation)) {
+        state.moveTo(path.pop());
       }
-      NodeStatus nextLocation = currentNeighbours.pop();
       state.moveTo(nextLocation.getId());
     }
   }
