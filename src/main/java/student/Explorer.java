@@ -4,7 +4,7 @@ import game.EscapeState;
 import game.ExplorationState;
 import game.NodeStatus;
 
-import java.util.Collection;
+import java.util.*;
 
 public class Explorer {
 
@@ -39,9 +39,30 @@ public class Explorer {
    * @param state the information available at the current state
    */
   public void explore(ExplorationState state) {
+    HashSet<Long> visited = new HashSet<>();
+    int currentDistance;
     Collection<NodeStatus> myNeighbours = state.getNeighbours();
-    for (NodeStatus n : myNeighbours) {
-      System.out.println(n.getDistanceToTarget());
+    Stack<NodeStatus> currentNeighbours = new Stack<>();
+    currentNeighbours.addAll(myNeighbours);
+    while (!currentNeighbours.isEmpty()) {
+      currentDistance = state.getDistanceToTarget();
+      if (currentDistance == 0) {
+        break;
+      }
+      visited.add(state.getCurrentLocation());
+      myNeighbours = state.getNeighbours();
+      if (myNeighbours instanceof ArrayList) {
+        Collections.reverse((ArrayList) myNeighbours);
+
+      }
+      for (NodeStatus n : myNeighbours) {
+//        if (!visited.contains(n)){
+//          currentNeighbours.push(n);
+//        }
+        currentNeighbours.addAll(myNeighbours);
+      }
+      NodeStatus nextLocation = currentNeighbours.pop();
+      state.moveTo(nextLocation.getId());
     }
   }
 
