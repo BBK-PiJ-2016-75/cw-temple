@@ -1,21 +1,17 @@
 package gui;
 
-import static gui.Constants.ROOT;
-
 import game.Node;
 
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import javax.imageio.ImageIO;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+
+import static gui.Constants.ROOT;
 
 /**
  * An instance is a panel that displays information about a currently selected Tile.
@@ -44,19 +40,19 @@ public class TileSelectPanel extends JPanel {
   private static final double ROW_COL_Y = 0.60;
   //Height proportion at which to display the amount of gold
   private static final double GOLD_HEIGHT = 0.70;
-  //Background for options pane
-  private BufferedImage background;        
   //Location of background image
-  private static final String BACKGROUND_PATH = ROOT + "info_texture.png";            
+  private static final String BACKGROUND_PATH = ROOT + "info_texture.png";
+  //Background for options pane
+  private BufferedImage background;
   //Tells user how to use this panel
-  private JLabel instructions;            
+  private JLabel instructions;
   //Information about the larger GUI
-  private GUI gui;                        
+  private GUI gui;
   //The currently selected node
-  private Node selectedNode;        
+  private Node selectedNode;
 
-  /** 
-   * Constructor: an instance at (x, y) with size (width, height) on Guie gui. 
+  /**
+   * Constructor: an instance at (x, y) with size (width, height) on Guie gui.
    */
   public TileSelectPanel(int x, int y, int width, int height, GUI gui) {
     this.gui = gui;
@@ -145,17 +141,17 @@ public class TileSelectPanel extends JPanel {
       text = "Row : " + selectedNode.getTile().getRow();
       page.setFont(new Font("default", Font.ROMAN_BASELINE, FONT_SIZE));
       x = getTextXForCenter((Graphics2D) page, text, (int) (ROW_X * getWidth()),
-        (int) (ROW_WIDTH * getWidth()));
+          (int) (ROW_WIDTH * getWidth()));
       page.drawString(text, x, (int) (ROW_COL_Y * getHeight()));
       text = "Col : " + selectedNode.getTile().getColumn();
       x = getTextXForCenter((Graphics2D) page, text, (int) (COL_X * getWidth()),
-        (int) (COL_WIDTH * getWidth()));
+          (int) (COL_WIDTH * getWidth()));
       page.drawString(text, x, (int) (ROW_COL_Y * getHeight()));
 
       //Amount of gold
       text = "Gold Count : " + selectedNode.getTile().getGold();
       x = getTextXForCenter((Graphics2D) page, text, (int) (RECT_X * getWidth()),
-        (int) (RECT_WIDTH * getWidth()));
+          (int) (RECT_WIDTH * getWidth()));
       page.drawString(text, x, (int) (GOLD_HEIGHT * getHeight()));
     }
   }

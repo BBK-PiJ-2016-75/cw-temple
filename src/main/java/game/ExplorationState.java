@@ -6,7 +6,7 @@ import java.util.Collection;
  * The state of the game while performing exploration.
  * In order to determine your next move you will need to call the various
  * methods of this interface. To move through the cavern, you will need to call moveTo(long).
- * 
+ * <p>
  * <p>An ExplorationState provides all the information necessary
  * to search through the cavern and find the target.</p>
  */

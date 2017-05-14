@@ -1,21 +1,20 @@
 package gui;
 
-import static gui.Constants.ROOT;
-
 import game.Cavern;
 import game.Node;
 import game.Tile;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import javax.imageio.ImageIO;
-import javax.swing.JPanel;
+
+import static gui.Constants.ROOT;
 
 /**
  * An instance is responsible for drawing the underlying maze on the screen.
@@ -26,45 +25,45 @@ public class MazePanel extends JPanel {
   private static final long serialVersionUID = 1L;
 
   //Path to orb image
-  private static final String ORB_PATH = ROOT + "orb.png";   
+  private static final String ORB_PATH = ROOT + "orb.png";
   //Path to image representing path        
-  private static final String PATH_PATH = ROOT + "path.png";         
+  private static final String PATH_PATH = ROOT + "path.png";
   //Path to wall image
-  private static final String WALL_PATH = ROOT + "wall.png";  
+  private static final String WALL_PATH = ROOT + "wall.png";
   //Path to the coin image
-  private static final String COIN_PATH = ROOT + "coins.png";        
+  private static final String COIN_PATH = ROOT + "coins.png";
   //Path to the entrance image
-  private static final String ENTRANCE_PATH = ROOT + "entrance.png"; 
+  private static final String ENTRANCE_PATH = ROOT + "entrance.png";
   private static final String TASTY_PATH = ROOT + "notes.txt";
   private static final String BACKGROUND_PATH = ROOT + "info_texture.png";
   //How dark should dark path be? Lower values means darker
-  private static final float DARK_FACTOR = 0.3f; 
+  private static final float DARK_FACTOR = 0.3f;
   private static final int COIN_SPRITES_PER_ROW = 7;
   private static final int COIN_SPRITES_PER_COL = 2;
 
   //The width (in pixels) of a tile on the grid
-  public static int TILE_WIDTH;       
+  public static int TILE_WIDTH;
   //The height (in pixels) of a tile on the grid
-  public static int TILE_HEIGHT;      
+  public static int TILE_HEIGHT;
 
   //Image representing an area the explorer can walk on
-  private final BufferedImage path; 
+  private final BufferedImage path;
   //Image representing a blocked area  
-  private final BufferedImage wall;   
+  private final BufferedImage wall;
   //Image representing the orb
-  private final BufferedImage orb;    
+  private final BufferedImage orb;
   private final BufferedImage entrance;
   private final BufferedImage tasty;
 
   //Image representing a coin spritesheet
-  private final Sprite coinSheet;        
+  private final Sprite coinSheet;
   private BufferedImage background;
   //Representation of the graph/level
-  private Cavern cavern;          
+  private Cavern cavern;
   //Contains the nodes already visited    
-  private boolean[][] visited;        
+  private boolean[][] visited;
   //Color to place over unvisited paths 
-  private Color darkness;                           
+  private Color darkness;
 
   /**
    * Create a new MazePanel of a given size.
@@ -89,10 +88,10 @@ public class MazePanel extends JPanel {
     try {
       path = ImageIO.read(new File(ClassLoader.getSystemClassLoader()
           .getResource(PATH_PATH).toURI()));
-      
+
       wall = ImageIO.read(new File(ClassLoader.getSystemClassLoader()
           .getResource(WALL_PATH).toURI()));
-      
+
       orb = ImageIO.read(new File(ClassLoader.getSystemClassLoader()
           .getResource(ORB_PATH).toURI()));
 
@@ -188,13 +187,13 @@ public class MazePanel extends JPanel {
     if (gold == Cavern.TASTY_VALUE) {
       return tasty;
     }
-    
+
     gold *= ((double) COIN_SPRITES_PER_ROW * COIN_SPRITES_PER_COL) / Cavern.MAX_GOLD_VALUE;
-    
+
     int spriteIndex = (int) gold;
     int rowIndex = spriteIndex / COIN_SPRITES_PER_ROW;
     int colIndex = spriteIndex % COIN_SPRITES_PER_ROW;
-    
+
     return coinSheet.getSprite(rowIndex, colIndex);
   }
 

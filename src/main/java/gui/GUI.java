@@ -4,14 +4,11 @@ import game.Cavern;
 import game.Node;
 import game.Tile;
 
-import java.awt.Point;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.image.BufferedImage;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
 
 /**
  * An instance is a GUI for the game.
@@ -32,9 +29,9 @@ public class GUI extends JFrame implements Constants {
   private TileSelectPanel tileSelect;     //Panel that provides more info on seleced tile
   private JLayeredPane master;            //The panel that holds all other panels
 
-  /** 
+  /**
    * Constructor a new display for cavern canvern with the player at (playerRow, playerCol)
-   * using randomg number seed seed. 
+   * using randomg number seed seed.
    */
   public GUI(Cavern cavern, int playerRow, int playerCol, long seed) {
     //Initialize frame
@@ -55,13 +52,13 @@ public class GUI extends JFrame implements Constants {
     explorer.setOpaque(false);
 
     //Create the panel for stats and options
-    options = new OptionsPanel(gameWidth, 0, screenWidth - gameWidth, 
+    options = new OptionsPanel(gameWidth, 0, screenWidth - gameWidth,
         (int) (screenHeight * INFO_SIZE), seed);
 
     //Create the panel for tile information
     tileSelect = new TileSelectPanel(gameWidth, (int) (screenHeight * INFO_SIZE),
-                                      screenWidth - gameWidth, 
-                                      (int) (screenHeight * (1 - INFO_SIZE)), this);
+        screenWidth - gameWidth,
+        (int) (screenHeight * (1 - INFO_SIZE)), this);
 
     //Layer the explorer and maze into master panel
     master = new JLayeredPane();
@@ -212,7 +209,7 @@ public class GUI extends JFrame implements Constants {
     errorFrame.add(errorText);
     errorFrame.setSize(ERROR_WIDTH, ERROR_HEIGHT);
     errorFrame.setLocation(new Point(getX() + getWidth() / 2 - ERROR_WIDTH / 2,
-                                      getY() + getHeight() / 2 - ERROR_HEIGHT / 2));
+        getY() + getHeight() / 2 - ERROR_HEIGHT / 2));
     errorFrame.setVisible(true);
   }
 }

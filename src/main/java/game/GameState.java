@@ -1,28 +1,15 @@
 package game;
 
-import static game.Constants.EXTRA_TIME_FACTOR;
-import static game.Constants.MAX_BONUS;
-import static game.Constants.MAX_COLS;
-import static game.Constants.MAX_ROWS;
-import static game.Constants.MIN_BONUS;
-import static game.Constants.MIN_COLS;
-import static game.Constants.MIN_ROWS;
-import static game.Constants.NO_BONUS_LENGTH;
-
 import gui.GUI;
+import student.Explorer;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
-import student.Explorer;
+import static game.Constants.*;
 
 public class GameState implements ExplorationState, EscapeState {
 
@@ -61,7 +48,7 @@ public class GameState implements ExplorationState, EscapeState {
     seed = -1;
 
     stage = Stage.EXPLORE;
-    gui = Optional.of(new GUI(exploreCavern, position.getTile().getRow(), 
+    gui = Optional.of(new GUI(exploreCavern, position.getTile().getRow(),
         position.getTile().getColumn(), 0));
   }
 
@@ -97,7 +84,7 @@ public class GameState implements ExplorationState, EscapeState {
 
     if (useGui) {
       gui = Optional.of(new GUI(exploreCavern, position.getTile().getRow(),
-                                 position.getTile().getColumn(), seed));
+          position.getTile().getColumn(), seed));
     } else {
       gui = Optional.empty();
     }
@@ -147,7 +134,7 @@ public class GameState implements ExplorationState, EscapeState {
         output(gui, "Your solution to explore returned at the wrong location.");
       }
     } catch (Throwable t) {
-      output(gui, "Your code caused an error  during the explore phase." 
+      output(gui, "Your code caused an error  during the explore phase."
           + " Please see console output.");
       System.err.println("We will move on to the escape phase anyway,"
           + " but your solution is not correct!");
@@ -198,7 +185,7 @@ public class GameState implements ExplorationState, EscapeState {
    */
   private int computeTimeToEscape() {
     int minTimeToEscape = escapeCavern.minPathLengthToTarget(position);
-    return (int) (minTimeToEscape + EXTRA_TIME_FACTOR 
+    return (int) (minTimeToEscape + EXTRA_TIME_FACTOR
         * (Cavern.MAX_EDGE_WEIGHT + 1) * escapeCavern.numOpenTiles() / 2);
 
   }
@@ -211,7 +198,7 @@ public class GameState implements ExplorationState, EscapeState {
     if (exploreDiff <= 0) {
       return MAX_BONUS;
     }
-    return Math.max(MIN_BONUS, MAX_BONUS - exploreDiff 
+    return Math.max(MIN_BONUS, MAX_BONUS - exploreDiff
         / NO_BONUS_LENGTH * (MAX_BONUS - MIN_BONUS));
   }
 
@@ -299,7 +286,7 @@ public class GameState implements ExplorationState, EscapeState {
 
   private int computeDistanceToTarget(int row, int col) {
     return Math.abs(row - exploreCavern.getTarget().getTile().getRow())
-             + Math.abs(col - exploreCavern.getTarget().getTile().getColumn());
+        + Math.abs(col - exploreCavern.getTarget().getTile().getColumn());
   }
 
   /**
@@ -317,7 +304,7 @@ public class GameState implements ExplorationState, EscapeState {
   @Override
   public Node getCurrentNode() {
     if (stage != Stage.ESCAPE) {
-      throw new IllegalStateException("getCurrentNode: Error, " 
+      throw new IllegalStateException("getCurrentNode: Error, "
           + "current Node may not be accessed unless in ESCAPE");
     }
     return position;
@@ -326,7 +313,7 @@ public class GameState implements ExplorationState, EscapeState {
   @Override
   public Node getExit() {
     if (stage != Stage.ESCAPE) {
-      throw new IllegalStateException("getEntrance: Error, " 
+      throw new IllegalStateException("getEntrance: Error, "
           + "current Node may not be accessed unless in ESCAPE");
     }
     return escapeCavern.getTarget();
@@ -335,7 +322,7 @@ public class GameState implements ExplorationState, EscapeState {
   @Override
   public Collection<Node> getVertices() {
     if (stage != Stage.ESCAPE) {
-      throw new IllegalStateException("getVertices: Error, " 
+      throw new IllegalStateException("getVertices: Error, "
           + "Vertices may not be accessed unless in ESCAPE");
     }
     return Collections.unmodifiableSet(escapeCavern.getGraph());

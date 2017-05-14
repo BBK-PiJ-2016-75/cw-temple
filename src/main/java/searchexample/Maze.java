@@ -13,9 +13,9 @@ import java.util.Stack;
 public class Maze {
 
   static final char C = ' ';
-  static final char X = 'x'; 
+  static final char X = 'x';
   static final char S = 's';
-  static final char E = 'e'; 
+  static final char E = 'e';
   static final char V = '.';
 
   static final int START_I = 1;
@@ -24,25 +24,44 @@ public class Maze {
   static final int END_J = 9;
 
   private static char[][] maze = {
-    {X, X, X, X, X, X, X, X, X, X},
-    {X, S, C, C, C, C, C, C, C, X},
-    {X, C, C, C, X, C, X, X, C, E},
-    {X, C, X, X, X, C, X, X, C, X},
-    {X, C, C, C, C, X, X, X, C, X},
-    {X, X, X, X, C, X, X, X, C, X},
-    {X, X, X, X, C, X, C, C, C, X},
-    {X, X, C, X, C, X, X, C, C, X},
-    {X, X, C, C, C, C, C, C, C, X},
-    {X, X, X, X, X, X, C, X, X, X}
+      {X, X, X, X, X, X, X, X, X, X},
+      {X, S, C, C, C, C, C, C, C, X},
+      {X, C, C, C, X, C, X, X, C, E},
+      {X, C, X, X, X, C, X, X, C, X},
+      {X, C, C, C, C, X, X, X, C, X},
+      {X, X, X, X, C, X, X, X, C, X},
+      {X, X, X, X, C, X, C, C, C, X},
+      {X, X, C, X, C, X, X, C, C, X},
+      {X, X, C, C, C, C, C, C, C, X},
+      {X, X, X, X, X, X, C, X, X, X}
   };
+
+  /**
+   * Sample usage of the routines.
+   */
+  public static void main(String[] args) {
+
+    Maze maze = new Maze();
+    maze.print();
+
+    System.out.println("\n\nFind a path using a stack: ");
+    maze.solveStack();
+
+    System.out.println("\n\nFind a path using a queue: ");
+    maze.solveQueue();
+
+    System.out.println("\n\nFind a path recursively: ");
+    maze.solveRec();
+
+  }
 
   public int size() {
     return maze.length;
   }
-  
+
   /**
    * Print out the maze to stdout.
-  */
+   */
   public void print() {
     for (int i = 0; i < size(); i++) {
       for (int j = 0; j < size(); j++) {
@@ -58,14 +77,14 @@ public class Maze {
    */
   public char mark(int i, int j, char value) {
     assert isInMaze(i, j);
-    
+
     char tmp = maze[i][j];
     maze[i][j] = value;
     return tmp;
   }
 
   public char mark(MazePos pos, char value) {
-    return mark(pos.xcoord() , pos.ycoord() , value);
+    return mark(pos.xcoord(), pos.ycoord(), value);
   }
 
   public boolean isMarked(int i, int j) {
@@ -95,7 +114,6 @@ public class Maze {
   public boolean isInMaze(MazePos pos) {
     return isInMaze(pos.xcoord(), pos.ycoord());
   }
-
 
   public boolean isFinal(int i, int j) {
     return i == Maze.END_I && j == Maze.END_J;
@@ -127,25 +145,6 @@ public class Maze {
         maze[i][j] = savedMaze[i][j];
       }
     }
-  }
-
-  /**
-   * Sample usage of the routines.
-   */
-  public static void main(String[] args) {
-
-    Maze maze = new Maze();
-    maze.print();
-
-    System.out.println("\n\nFind a path using a stack: ");
-    maze.solveStack();
-
-    System.out.println("\n\nFind a path using a queue: ");
-    maze.solveQueue();
-
-    System.out.println("\n\nFind a path recursively: ");
-    maze.solveRec();
-
   }
 
 
@@ -190,17 +189,17 @@ public class Maze {
         candidates.push(next);
       }
       next = crt.east();
-      
-      if (isInMaze(next) && isClear(next)) { 
+
+      if (isInMaze(next) && isClear(next)) {
         candidates.push(next);
       }
       next = crt.west();
-      
+
       if (isInMaze(next) && isClear(next)) {
         candidates.push(next);
       }
       next = crt.south();
-      
+
       if (isInMaze(next) && isClear(next)) {
         candidates.push(next);
       }
@@ -217,7 +216,7 @@ public class Maze {
     restore(savedMaze);
   }
 
-  /** 
+  /**
    * This solution uses a QUEUE to keep track of possible
    * states/positions to explore; it marks the maze to remember the
    * positions that it's already explored.
@@ -272,7 +271,7 @@ public class Maze {
 
     if (!candidates.isEmpty()) {
       System.out.println("Found a solution: ");
-    } else { 
+    } else {
       System.out.println("You're stuck in the maze!");
     }
     print();
@@ -282,7 +281,7 @@ public class Maze {
   }
 
   /**
-   * Solve using recursion. 
+   * Solve using recursion.
    * Note: this solution unmarks the path upon reaching
    * dead ends, so in the end only the path is left marked. It is
    * possible to write a solution that does not un-mark its traces,
@@ -298,7 +297,7 @@ public class Maze {
   }
 
 
-  /** 
+  /**
    * Find a path to exit the maze from this position. Works
    * recursively, by advancing to a neighbor and continuing from
    * there. If a path is found, return true. Otherwise return false.
@@ -378,17 +377,17 @@ public class Maze {
       xcoord = i;
       ycoord = j;
     }
- 
-    public int xcoord()  { 
+
+    public int xcoord() {
       return xcoord;
     }
 
-    public int ycoord()  { 
+    public int ycoord() {
       return ycoord;
     }
 
     public void print() {
-      System.out.println("(" + xcoord()  + "," + ycoord()  + ")");
+      System.out.println("(" + xcoord() + "," + ycoord() + ")");
     }
 
     public MazePos north() {

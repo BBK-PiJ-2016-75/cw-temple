@@ -1,18 +1,17 @@
 package gui;
 
-import static gui.Constants.ROOT;
-
 import game.Cavern;
 import game.Cavern.Direction;
 import game.Node;
 
-import java.awt.Graphics;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.SynchronousQueue;
 
-import javax.swing.JPanel;
+import static gui.Constants.ROOT;
 
 /**
  * Responsible for managing the explorer and drawing it on the screen.
@@ -20,38 +19,34 @@ import javax.swing.JPanel;
  */
 public class ExplorerSprite extends JPanel {
   private static final long serialVersionUID = 1L;
-
-  //Sprite class to handle animating the explorer
-  private Sprite sprite;                      
+  //Number of animation frames displayed per second
+  private static final double ANIMATION_FPS = 10;
+  //Location of the spritesheet image
+  private static final String SPRITESHEET = ROOT + "explorer_sprites.png";
   //Width (in pixels) of a single explorer image on the spritesheet
-  private final int spriteWidth = 29;  
+  private final int spriteWidth = 29;
   //Height (in pixels) if a single explorer image on the spritesheet
-  private final int spriteHeight = 36;            
-
+  private final int spriteHeight = 36;
+  //Sprite class to handle animating the explorer
+  private Sprite sprite;
   //Explorer's row index (updates only once move completes)
-  private int row;  
-  //Explorer's column index (updates only once move completes)                          
-  private int col;     
-  //x-coordinate (pixels)                       
-  private int posX;       
-  //y-coordinate(pixels)                    
-  private int posY;                   
-  //List of moves we need to make to get to the goal location        
+  private int row;
+  //Explorer's column index (updates only once move completes)
+  private int col;
+  //x-coordinate (pixels)
+  private int posX;
+  //y-coordinate(pixels)
+  private int posY;
+  //List of moves we need to make to get to the goal location
   private BlockingQueue<MovePair> queuedMoves;
   //Which direction is the explorer currently facing?
-  private Cavern.Direction dir = Direction.NORTH;  
-  //Allow our moveTo to block until complete.     
-  private Semaphore blockUntilDone;          
-
+  private Cavern.Direction dir = Direction.NORTH;
+  //Allow our moveTo to block until complete.
+  private Semaphore blockUntilDone;
   //Thread that updates explorer's location
-  private Thread updateThread;        
-  //Thread that updates explorer's animation        
-  private Thread animationUpdateThread;       
-
-  //Number of animation frames displayed per second
-  private static final double ANIMATION_FPS = 10;    
-  //Location of the spritesheet image
-  private static final String SPRITESHEET = ROOT + "explorer_sprites.png";    
+  private Thread updateThread;
+  //Thread that updates explorer's animation
+  private Thread animationUpdateThread;
 
   /**
    * Constructor:  an instance with player;'s starting position (startRow, startCol).
@@ -157,11 +152,11 @@ public class ExplorerSprite extends JPanel {
     return col;
   }
 
-  /** 
+  /**
    * Tell the explorer to move from its current location to dst.
    * After making move, calling thread will block until move completes on GUI.
    * Precondition: dst must be adjacent to the current location and not currently moving.
-   * May throw an InterruptedException 
+   * May throw an InterruptedException
    */
   public void moveTo(Node dst) throws InterruptedException {
     dir = getDirection(row, col, dst.getTile().getRow(), dst.getTile().getColumn());

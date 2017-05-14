@@ -21,20 +21,20 @@ targetCompatibility = 1.8
 
 // In this section you declare where to find the dependencies of your project
 repositories {
-    // Use jcenter for resolving your dependencies.
-    // You can declare any Maven/Ivy/file repository here.
-    jcenter()
+  // Use jcenter for resolving your dependencies.
+  // You can declare any Maven/Ivy/file repository here.
+  jcenter()
 }
 
 dependencies {
-    // This dependency is exported to consumers, that is to say found on their compile classpath.
-    api 'org.apache.commons:commons-math3:3.6.1'
-
-    // This dependency is used internally, and not exposed to consumers on their own compile classpath.
-    implementation 'com.google.guava:guava:20.0'
-
-    // Use JUnit test framework
-    testImplementation 'junit:junit:4.12'
+  // This dependency is exported to consumers, that is to say found on their compile classpath.
+  api 'org.apache.commons:commons-math3:3.6.1'
+  
+  // This dependency is used internally, and not exposed to consumers on their own compile classpath.
+  implementation 'com.google.guava:guava:20.0'
+  
+  // Use JUnit test framework
+  testImplementation 'junit:junit:4.12'
 }
 
 //mainClassName = "main.GUImain"
@@ -44,45 +44,45 @@ mainClassName = "searchexample.Maze"
 
 
 jdepend {
-    ignoreFailures = true
+  ignoreFailures = true
 }
 
 checkstyle {
-    toolVersion = "7.6"
+  toolVersion = "7.6"
 }
 
 findbugs {
-    toolVersion = "3.0.1"
-    ignoreFailures = true
-    reportLevel = "high"
-    effort = "max"
+  toolVersion = "3.0.1"
+  ignoreFailures = true
+  reportLevel = "high"
+  effort = "max"
 }
 
 tasks.withType(Checkstyle) {
-    reports {
-        xml.enabled false
-        html.enabled true
-        html.stylesheet resources.text.fromFile('config/xsl/checkstyle-custom.xsl')
-    }
+  reports {
+    xml.enabled false
+    html.enabled true
+    html.stylesheet resources.text.fromFile('config/xsl/checkstyle-custom.xsl')
+  }
 }
 
 tasks.withType(FindBugs) {
-    reports {
-        xml.enabled false
-        html.enabled true
-        html.stylesheet resources.text.fromFile('config/xsl/findbugs-custom.xsl')
-    }
+  reports {
+    xml.enabled false
+    html.enabled true
+    html.stylesheet resources.text.fromFile('config/xsl/findbugs-custom.xsl')
+  }
 }
 
 jacoco {
-    toolVersion = "0.7.6.201602180812"
-    reportsDir = file("$buildDir/customJacocoReportDir")
+  toolVersion = "0.7.6.201602180812"
+  reportsDir = file("$buildDir/customJacocoReportDir")
 }
 
 jacocoTestReport {
-    reports {
-        xml.enabled false
-        csv.enabled false
-        html.destination "${buildDir}/jacocoHtml"
-    }
+  reports {
+    xml.enabled false
+    csv.enabled false
+    html.destination "${buildDir}/jacocoHtml"
+  }
 }

@@ -1,10 +1,6 @@
 package game;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
  * An instance is a priority queue of elements of type E implemented as a min-heap.
@@ -15,7 +11,7 @@ class InternalMinHeap<E> {
 
   /**
    * The heap invariant is given below. Note that / denotes int division.
-   * 
+   * <p>
    * <p>lst[0..size-1] is viewed as a min-heap, i.e.
    * 1. Each array element in lst[0..size-1] contains a value of the heap.
    * 2. The children of each lst[i] are lst[2i+1] and lst[2i+2].

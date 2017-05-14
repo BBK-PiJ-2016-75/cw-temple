@@ -1,10 +1,8 @@
 package gui;
 
-import static game.Constants.MAX_BONUS;
-import static gui.Constants.ROOT;
-
-import java.awt.Graphics;
-import java.awt.GridLayout;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -12,38 +10,34 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.text.DecimalFormat;
-import javax.imageio.ImageIO;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JSlider;
+
+import static game.Constants.MAX_BONUS;
+import static gui.Constants.ROOT;
 
 public class OptionsPanel extends JPanel implements ActionListener {
   //Location of background image
-  private static final String BACKGROUND_PATH = ROOT + "info_texture.png";  
-  //The minimum speed for the game (seconds per move)          
-  private static double MIN_SPEED = 0.05;   
-  //The maximum speed for the game (seconds per move)     
-  private static double MAX_SPEED = 0.85;        
+  private static final String BACKGROUND_PATH = ROOT + "info_texture.png";
   private static final long serialVersionUID = 1L;
-
+  //The minimum speed for the game (seconds per move)
+  private static double MIN_SPEED = 0.05;
+  //The maximum speed for the game (seconds per move)
+  private static double MAX_SPEED = 0.85;
   long seed;
   private JSlider speedSelect;
   private JProgressBar timeRemaining;
   private JButton showSeed;
   //Description for speed slider
-  private JLabel speedLabel;       
+  private JLabel speedLabel;
   //Shows the bonus multiplier         
-  private JLabel bonusLabel;      
+  private JLabel bonusLabel;
   //Shows number of coins we have          
-  private JLabel coinsLabel;     
+  private JLabel coinsLabel;
   //Shows the amount of time we have left           
-  private JLabel timeRemainingLabel;  
+  private JLabel timeRemainingLabel;
   //Shows coins multiplied by bonus factor      
-  private JLabel scoreLabel;     
+  private JLabel scoreLabel;
   //Background for options pane           
-  private BufferedImage background;        
+  private BufferedImage background;
 
   /**
    * Constructor: an instance.
@@ -56,10 +50,10 @@ public class OptionsPanel extends JPanel implements ActionListener {
      */
     int lowVal = (int) (Math.log10(MAX_SPEED) * -1000);
     int highVal = (int) (Math.log10(MIN_SPEED) * -1000);
-    int startVal = (int) (-1000 * Math.log10((double) GUI.getFramesPerMove() 
+    int startVal = (int) (-1000 * Math.log10((double) GUI.getFramesPerMove()
         / GUI.getFramesPerSecond()));
     speedSelect = new JSlider(JSlider.HORIZONTAL, lowVal, highVal, startVal);
-    speedSelect.addChangeListener((e) -> GUI.setFramesPerMove((int) (GUI.getFramesPerSecond() 
+    speedSelect.addChangeListener((e) -> GUI.setFramesPerMove((int) (GUI.getFramesPerSecond()
         * Math.pow(10, -(double) speedSelect.getValue() / 1000.0))));
 
     timeRemaining = new JProgressBar(0, 100);
