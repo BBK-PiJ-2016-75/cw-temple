@@ -2,6 +2,9 @@ package student;
 
 import game.EscapeState;
 import game.ExplorationState;
+import game.NodeStatus;
+
+import java.util.Collection;
 
 public class Explorer {
 
@@ -36,7 +39,10 @@ public class Explorer {
    * @param state the information available at the current state
    */
   public void explore(ExplorationState state) {
-    //TODO:
+    Collection<NodeStatus> myNeighbours = state.getNeighbours();
+    for (NodeStatus n : myNeighbours) {
+      System.out.println(n.getDistanceToTarget());
+    }
   }
 
   /**
