@@ -42,27 +42,24 @@ public class Explorer {
    */
   public void explore(ExplorationState state) {
     Stack<Long> path = new Stack<>();
-    int currentDistance;
-    Collection<NodeStatus> myNeighbours = state.getNeighbours();
     PriorityQueue<NodeStatus> currentNeighbours = new PriorityQueue<>();
-    currentNeighbours.addAll(myNeighbours);
-    while (!currentNeighbours.isEmpty()) {
-      currentDistance = state.getDistanceToTarget();
+    do {
+      int currentDistance = state.getDistanceToTarget();
       if (currentDistance == 0) {
         break;
       }
-      path.add(state.getCurrentLocation());
-      myNeighbours = state.getNeighbours();
+      Collection<NodeStatus> myNeighbours = state.getNeighbours();
       currentNeighbours.addAll(myNeighbours);
+      path.add(state.getCurrentLocation());
       NodeStatus nextLocation = currentNeighbours.remove();
       while (path.contains(nextLocation)){
         nextLocation = currentNeighbours.remove();
       }
-      while (!myNeighbours.contains(nextLocation)) {
-        state.moveTo(path.pop());
-      }
+//     while (!myNeighbours.contains(nextLocation)) {
+//       state.moveTo(path.pop());
+//     }
       state.moveTo(nextLocation.getId());
-    }
+    } while (true);
   }
 
   /**
