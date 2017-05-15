@@ -41,24 +41,27 @@ public class Explorer {
    * @param state the information available at the current state
    */
   public void explore(ExplorationState state) {
-    Stack<Long> path = new Stack<>();
+    Stack<NodeStatus> path = new Stack<>();
     PriorityQueue<NodeStatus> currentNeighbours = new PriorityQueue<>();
     do {
-      int currentDistance = state.getDistanceToTarget();
-      if (currentDistance == 0) {
+      if (state.getDistanceToTarget() == 0) {
         break;
       }
       Collection<NodeStatus> myNeighbours = state.getNeighbours();
       currentNeighbours.addAll(myNeighbours);
-      path.add(state.getCurrentLocation());
       NodeStatus nextLocation = currentNeighbours.remove();
-      while (path.contains(nextLocation)){
+      while (!currentNeighbours.isEmpty() && path.contains(nextLocation.getId())) {
         nextLocation = currentNeighbours.remove();
       }
-//     while (!myNeighbours.contains(nextLocation)) {
-//       state.moveTo(path.pop());
-//     }
-      state.moveTo(nextLocation.getId());
+      long destination = nextLocation.getId();
+//      if (!path.isEmpty() && path.containsAll(currentNeighbours)) {
+//        destination = path.pop();
+//      } else {
+//        destination = nextLocation.getId();
+//      }
+      path.push(nextLocation);
+      currentNeighbours.clear();
+      state.moveTo(destination);
     } while (true);
   }
 
