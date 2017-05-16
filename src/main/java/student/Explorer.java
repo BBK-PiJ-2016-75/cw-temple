@@ -41,27 +41,25 @@ public class Explorer {
    * @param state the information available at the current state
    */
   public void explore(final ExplorationState state) {
-    Stack<NodeStatus> path = new Stack<>();
-    PriorityQueue<NodeStatus> currentNeighbours = new PriorityQueue<>();
+    Stack<Long> exploredPath = new Stack<>();
+    PriorityQueue<NodeStatus> checkedNodes = new PriorityQueue<>();
     do {
       if (state.getDistanceToTarget() == 0) {
         break;
       }
-      Collection<NodeStatus> myNeighbours = state.getNeighbours();
-      currentNeighbours.addAll(myNeighbours);
-      NodeStatus nextLocation = currentNeighbours.remove();
-      while (!currentNeighbours.isEmpty() && path.contains(nextLocation)) {
-        nextLocation = currentNeighbours.remove();
+      Collection<NodeStatus> currentNeighbours = state.getNeighbours();
+      checkedNodes.addAll(currentNeighbours);
+      NodeStatus nextLocation = checkedNodes.remove();
+      while (exploredPath.contains(nextLocation.getId())) {
+        nextLocation = checkedNodes.remove();
       }
-//      if (!path.isEmpty()) {
-//        NodeStatus previousLocation = path.peek();
-//        if (previousLocation.getDistanceToTarget() < nextLocation.getDistanceToTarget()) {
-//          nextLocation = path.pop();
-//        }
-//      }
-      currentNeighbours.clear();
       long destination = nextLocation.getId();
-      path.push(nextLocation);
+      while (!currentNeighbours.contains(nextLocation)) {
+        long backtrack = exploredPath.pop();
+        state.moveTo(backtrack);
+        currentNeighbours = state.getNeighbours();
+      }
+      exploredPath.push(state.getCurrentLocation());
       state.moveTo(destination);
     } while (true);
   }
