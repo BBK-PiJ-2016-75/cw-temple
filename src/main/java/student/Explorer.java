@@ -4,9 +4,7 @@ import game.EscapeState;
 import game.ExplorationState;
 import game.NodeStatus;
 
-import java.util.Collection;
-import java.util.PriorityQueue;
-import java.util.Stack;
+import java.util.*;
 
 public class Explorer {
 
@@ -48,18 +46,35 @@ public class Explorer {
         break;
       }
       Collection<NodeStatus> currentNeighbours = state.getNeighbours();
-      checkedNodes.addAll(currentNeighbours);
+      for (NodeStatus node: currentNeighbours) {
+        if (!checkedNodes.contains(node)) {
+          checkedNodes.add(node);
+        }
+      }
       NodeStatus nextLocation = checkedNodes.remove();
       while (exploredPath.contains(nextLocation.getId())) {
         nextLocation = checkedNodes.remove();
       }
-      long destination = nextLocation.getId();
-      while (!currentNeighbours.contains(nextLocation)) {
-        long backtrack = exploredPath.pop();
-        state.moveTo(backtrack);
-        currentNeighbours = state.getNeighbours();
+      LinkedList<Long> backTrack = new LinkedList<>();
+      if (!currentNeighbours.contains(nextLocation)) {
+        long branch = state.getCurrentLocation();
+        backTrack.add(branch);
+        long backStep;
+        while (!currentNeighbours.contains(nextLocation)) {
+          backStep = exploredPath.pop();
+          backTrack.add(backStep);
+          state.moveTo(backStep);
+          currentNeighbours = state.getNeighbours();
+        }
       }
+      long destination = nextLocation.getId();
       exploredPath.push(state.getCurrentLocation());
+      if (!backTrack.isEmpty()) {
+        for (int i = backTrack.size() - 1; i > 0; i--) {
+          exploredPath.push(backTrack.get(i));
+        }
+        exploredPath.addAll(backTrack);
+      }
       state.moveTo(destination);
     } while (true);
   }
